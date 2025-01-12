@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓位管理</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee, #a18cd1);
+            color: #333;
+            padding: 20px;
+            animation: gradientBG 10s ease infinite;
+            background-size: 400% 400%;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .section {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #2980b9;
+            color: #fff;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #1c5980;
+        }
+        .result {
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>仓位管理</h1>
+
+    <div class="section">
+        <p>输入总资金和单只股票的仓位比例，计算每只股票的投资金额：</p>
+        <label for="totalFund">总资金（元）：</label>
+        <input type="number" id="totalFund" placeholder="例如：100000"><br>
+        <label for="positionRatio">单只股票仓位比例（%）：</label>
+        <input type="number" id="positionRatio" placeholder="例如：5"><br>
+        <button onclick="calculatePosition()">计算仓位</button>
+        <p>每只股票投资金额：<span id="positionResult" class="result"></span></p>
+    </div>
+
+    <script>
+        // 仓位管理
+        function calculatePosition() {
+            const totalFund = parseFloat(document.getElementById('totalFund').value);
+            const positionRatio = parseFloat(document.getElementById('positionRatio').value);
+
+            if (isNaN(totalFund) || isNaN(positionRatio)) {
+                alert("请输入有效的数值！");
+                return;
+            }
+
+            const positionAmount = (totalFund * positionRatio) / 100;
+            document.getElementById('positionResult').innerText = `${positionAmount.toFixed(2)} 元`;
+        }
+    </script>
+
+</body>
+</html>
