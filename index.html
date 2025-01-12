@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>印钞机——ds投资实践工具</title>
+    <title>印钞机——大数投资实践工具</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,34 +31,6 @@
             height: 50px;
             margin-left: 10px;
         }
-        .section {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .section h2 {
-            color: #2980b9;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #2980b9;
-            color: #fff;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #1c5980;
-        }
-        .result {
-            font-weight: bold;
-            color: #27ae60;
-        }
         .keywords {
             text-align: center;
             margin: 20px 0;
@@ -71,6 +43,29 @@
             border-radius: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             font-weight: bold;
+            color: #2980b9;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card h2 {
             color: #2980b9;
         }
     </style>
@@ -89,143 +84,32 @@
         <span>组合投资</span>
     </div>
 
-    <!-- 核心思想介绍 -->
-    <div class="section">
-        <h2>ds投资核心思想</h2>
-        <p>ds投资是一种科学的投资方法，核心思想包括：</p>
-        <ul>
-            <li><strong>分散投资</strong>：通过投资大量低估值的企业，分散风险。</li>
-            <li><strong>长期持有</strong>：注重长期投资，避免频繁交易。</li>
-            <li><strong>低估值策略</strong>：选择市盈率（PE）、市净率（PB）等指标较低的股票。</li>
-            <li><strong>复利效应</strong>：通过长期复利实现财富增长。</li>
-            <li><strong>理性投资</strong>：避免情绪化操作，坚持科学的投资方法。</li>
-        </ul>
+    <!-- 功能卡片 -->
+    <div class="card-container">
+        <!-- 仓位管理 -->
+        <div class="card" onclick="window.location.href='position_management.html'">
+            <h2>仓位管理</h2>
+            <p>根据总资金和仓位比例，计算每只股票的投资金额。</p>
+        </div>
+
+        <!-- 建仓标准 -->
+        <div class="card" onclick="window.location.href='buy_condition.html'">
+            <h2>建仓标准</h2>
+            <p>根据 PB 和 PE 判断是否符合建仓条件。</p>
+        </div>
+
+        <!-- 加仓标准 -->
+        <div class="card" onclick="window.location.href='add_position.html'">
+            <h2>加仓标准</h2>
+            <p>当股票价格下跌到一定比例时，建议加仓。</p>
+        </div>
+
+        <!-- 卖出标准 -->
+        <div class="card" onclick="window.location.href='sell_condition.html'">
+            <h2>卖出标准</h2>
+            <p>当股票价格上涨到一定比例时，建议卖出。</p>
+        </div>
     </div>
-
-    <!-- 仓位管理 -->
-    <div class="section">
-        <h2>仓位管理</h2>
-        <p>输入总资金和单只股票的仓位比例，计算每只股票的投资金额：</p>
-        <label for="totalFund">总资金（元）：</label>
-        <input type="number" id="totalFund" placeholder="例如：100000"><br>
-        <label for="positionRatio">单只股票仓位比例（%）：</label>
-        <input type="number" id="positionRatio" placeholder="例如：5"><br>
-        <button onclick="calculatePosition()">计算仓位</button>
-        <p>每只股票投资金额：<span id="positionResult" class="result"></span></p>
-    </div>
-
-    <!-- 建仓标准 -->
-    <div class="section">
-        <h2>建仓标准</h2>
-        <p>输入股票的 PB 和 PE，判断是否符合建仓标准：</p>
-        <label for="stockPB">市净率（PB）：</label>
-        <input type="number" id="stockPB" placeholder="例如：1.5"><br>
-        <label for="stockPE">市盈率（PE）：</label>
-        <input type="number" id="stockPE" placeholder="例如：10"><br>
-        <button onclick="checkBuyCondition()">判断建仓</button>
-        <p>建仓建议：<span id="buyResult" class="result"></span></p>
-    </div>
-
-    <!-- 加仓标准 -->
-    <div class="section">
-        <h2>加仓标准</h2>
-        <p>输入股票的当前价格和建仓价格，判断是否需要加仓：</p>
-        <label for="currentPrice">当前价格（元）：</label>
-        <input type="number" id="currentPrice" placeholder="例如：50"><br>
-        <label for="buyPrice">建仓价格（元）：</label>
-        <input type="number" id="buyPrice" placeholder="例如：60"><br>
-        <button onclick="checkAddPosition()">判断加仓</button>
-        <p>加仓建议：<span id="addPositionResult" class="result"></span></p>
-    </div>
-
-    <!-- 卖出标准 -->
-    <div class="section">
-        <h2>卖出标准</h2>
-        <p>输入股票的当前价格和建仓价格，判断是否需要卖出：</p>
-        <label for="sellCurrentPrice">当前价格（元）：</label>
-        <input type="number" id="sellCurrentPrice" placeholder="例如：80"><br>
-        <label for="sellBuyPrice">建仓价格（元）：</label>
-        <input type="number" id="sellBuyPrice" placeholder="例如：60"><br>
-        <button onclick="checkSellCondition()">判断卖出</button>
-        <p>卖出建议：<span id="sellResult" class="result"></span></p>
-    </div>
-
-    <!-- 名言展示 -->
-    <div class="section">
-        <h2>经典名言</h2>
-        <p>“投资是一场马拉松，而不是短跑。” —— 老师</p>
-        <p>“低估值的股票是未来财富的源泉。” —— 《ds投资》</p>
-    </div>
-
-    <script>
-        // 仓位管理
-        function calculatePosition() {
-            const totalFund = parseFloat(document.getElementById('totalFund').value);
-            const positionRatio = parseFloat(document.getElementById('positionRatio').value);
-
-            if (isNaN(totalFund) || isNaN(positionRatio)) {
-                alert("请输入有效的数值！");
-                return;
-            }
-
-            const positionAmount = (totalFund * positionRatio) / 100;
-            document.getElementById('positionResult').innerText = `${positionAmount.toFixed(2)} 元`;
-        }
-
-        // 建仓标准
-        function checkBuyCondition() {
-            const stockPB = parseFloat(document.getElementById('stockPB').value);
-            const stockPE = parseFloat(document.getElementById('stockPE').value);
-
-            if (isNaN(stockPB) || isNaN(stockPE)) {
-                alert("请输入有效的数值！");
-                return;
-            }
-
-            let result = "不符合建仓标准";
-            if (stockPB < 2 && stockPE < 15) {
-                result = "符合建仓标准";
-            }
-
-            document.getElementById('buyResult').innerText = result;
-        }
-
-        // 加仓标准
-        function checkAddPosition() {
-            const currentPrice = parseFloat(document.getElementById('currentPrice').value);
-            const buyPrice = parseFloat(document.getElementById('buyPrice').value);
-
-            if (isNaN(currentPrice) || isNaN(buyPrice)) {
-                alert("请输入有效的数值！");
-                return;
-            }
-
-            let result = "不需要加仓";
-            if (currentPrice < buyPrice * 0.9) {
-                result = "建议加仓";
-            }
-
-            document.getElementById('addPositionResult').innerText = result;
-        }
-
-        // 卖出标准
-        function checkSellCondition() {
-            const currentPrice = parseFloat(document.getElementById('sellCurrentPrice').value);
-            const buyPrice = parseFloat(document.getElementById('sellBuyPrice').value);
-
-            if (isNaN(currentPrice) || isNaN(buyPrice)) {
-                alert("请输入有效的数值！");
-                return;
-            }
-
-            let result = "不需要卖出";
-            if (currentPrice > buyPrice * 1.5) {
-                result = "建议卖出";
-            }
-
-            document.getElementById('sellResult').innerText = result;
-        }
-    </script>
 
 </body>
 </html>
